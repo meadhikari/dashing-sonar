@@ -1,0 +1,14 @@
+require 'rubygems'
+require 'simple-rss'
+require 'open-uri'
+data = Hash.new({ value: 0 })
+
+SCHEDULER.every '20s' do
+        rss = SimpleRSS.parse open('https://www.site24x7.com/login/status.do?execute=portalIntegration&id=udo4JvYHDfmOoGi0LQvn1VEJbzuheRsUD%2BmHhF6b8P9Rc%2BbiiJlv0F2ThnP%2FX8RkyWsCdOT0N2uH%0AqUexUTtXs3oiIFDuVU4z&rss=true')
+        rss.items.each do |item|
+                site_name = item.description.split(" is \n\n\n\n\n ")[0]
+                response_time = item.description.scan(/\d/).join('')
+                data[site_name] = { label: site_name, value: response_time}
+        end
+        send_event('buzzwords', { items: data.values })
+end

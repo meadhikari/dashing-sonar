@@ -22,3 +22,4 @@ class Dashing.Number extends Dashing.Widget
         c.replace /\bstatus-\S+/g, ''
       # add new class
       $(@get('node')).addClass "status-#{data.status}"
+      $(@get('node')).addClass "status-#{data.status}"
